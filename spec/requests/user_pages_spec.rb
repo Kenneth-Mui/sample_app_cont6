@@ -2,25 +2,24 @@ require 'spec_helper'
 
 describe "User pages" do
 
-subject { page }
+  subject { page }
 
-	describe "profile page" do
-		let(:user) { FactoryGirl.create(:user) }
-		before { visit user_path(user) }
+  describe "profile page" do
+    let(:user) { FactoryGirl.create(:user) }
+    before { visit user_path(user) }
 
-		it { should have_content(user.name) }
-		it { should have_title(user.name) }
-	end
+    it { should have_content(user.name) }
+    it { should have_title(user.name) }
+  end
 
-	describe "signup page" do
-	    before { visit signup_path }
+  describe "signup page" do
+    before { visit signup_path }
 
-    	it { should have_content('Sign up') }
-    	it { should have_title(full_title('Sign up')) }
-  	end
+    it { should have_content('Sign up') }
+    it { should have_title(full_title('Sign up')) }
+  end
 
-  	describe "signup" do
-
+  describe "signup" do
     before { visit signup_path }
 
     let(:submit) { "Create my account" }
@@ -36,7 +35,6 @@ subject { page }
         it { should have_title('Sign up') }
         it { should have_content('error') }
       end
-
     end
 
     describe "with valid information" do
@@ -47,20 +45,21 @@ subject { page }
         fill_in "Confirmation", with: "foobar"
       end
 
-      it "should create a user" do
-        expect { click_button submit }.to change(User, :count).by(1)
-      end
+        it "should create a user" do
+          expect { click_button submit }.to change(User, :count).by(1)
+        end
 
       describe "after saving the user" do
         before { click_button submit }
         let(:user) { User.find_by(email: 'user@example.com') }
 
+        it {should have_link('Sign out')}
         it { should have_title(user.name) }
         it { should have_selector('div.alert.alert-success', text: 'Welcome') }
       end
-      
     end
   end
 
-end
+  
 
+end
